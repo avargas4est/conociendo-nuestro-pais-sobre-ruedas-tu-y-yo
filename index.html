@@ -1,0 +1,540 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
+<title>Mi amor, vamos a la aventura</title>
+<meta name="description" content="Una ruta, un carro, dos personas. Vamos a la aventura.">
+<meta name="theme-color" content="#070A14">
+<meta property="og:title" content="Mi amor, vamos a la aventura">
+<meta property="og:description" content="Tengo algo que proponerte. Ábrelo.">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,400;0,500;1,400;1,500&family=Jost:wght@200;300;400;500&display=swap" rel="stylesheet">
+<style>
+  :root{
+    --noche:#070A14;
+    --noche-2:#0C1120;
+    --carta:#111827;
+    --hueso:#F3EFE7;
+    --hueso-tenue:#9AA3B4;
+    --ambar:#F0A957;
+    --ambar-fuerte:#FF9245;
+    --borde:rgba(240,169,87,.18);
+    --serif:'Playfair Display', Georgia, 'Times New Roman', serif;
+    --sans:'Jost', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+  }
+  *{margin:0;padding:0;box-sizing:border-box;}
+  html{scroll-behavior:smooth;-webkit-text-size-adjust:100%;}
+  body{
+    background:var(--noche);
+    color:var(--hueso);
+    font-family:var(--sans);font-weight:300;
+    overflow-x:hidden;-webkit-font-smoothing:antialiased;
+  }
+  body.bloqueado{overflow:hidden;}
+
+  /* ================= CIELO ================= */
+  .cielo{
+    position:fixed;inset:0;z-index:0;pointer-events:none;
+    background:
+      radial-gradient(120% 80% at 50% 105%, rgba(240,169,87,.16) 0%, rgba(240,169,87,.05) 32%, transparent 62%),
+      radial-gradient(90% 60% at 78% 8%, rgba(96,120,200,.15) 0%, transparent 60%),
+      linear-gradient(180deg, #05070F 0%, #070A14 42%, #0B1020 78%, #12172A 100%);
+  }
+  .estrella{
+    position:absolute;background:#fff;border-radius:50%;
+    animation:titilar 4s ease-in-out infinite;
+  }
+  @keyframes titilar{0%,100%{opacity:.14;}50%{opacity:.95;}}
+
+  .fugaz{
+    position:absolute;width:110px;height:1px;
+    background:linear-gradient(90deg, rgba(255,255,255,0), rgba(255,255,255,.85));
+    opacity:0;transform:rotate(18deg);
+    animation:cruzar 9s ease-in infinite;
+  }
+  @keyframes cruzar{
+    0%{opacity:0;transform:translate(0,0) rotate(18deg);}
+    4%{opacity:1;}
+    13%{opacity:0;transform:translate(280px,90px) rotate(18deg);}
+    100%{opacity:0;transform:translate(280px,90px) rotate(18deg);}
+  }
+
+  /* montañas */
+  .montanas{position:fixed;left:0;right:0;bottom:0;z-index:1;pointer-events:none;line-height:0;}
+  .montanas svg{width:100%;height:auto;display:block;}
+
+  /* grano */
+  .grano{
+    position:fixed;inset:0;z-index:3;pointer-events:none;opacity:.045;
+    background-image:url("data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' width='140' height='140'><filter id='r'><feTurbulence type='fractalNoise' baseFrequency='.85' numOctaves='3'/></filter><rect width='140' height='140' filter='url(%23r)'/></svg>");
+  }
+  /* viñeta */
+  .vineta{
+    position:fixed;inset:0;z-index:2;pointer-events:none;
+    background:radial-gradient(115% 85% at 50% 45%, transparent 40%, rgba(0,0,0,.55) 100%);
+  }
+
+  /* ================= PORTADA ================= */
+  .portada{
+    position:fixed;inset:0;z-index:60;
+    display:flex;flex-direction:column;align-items:center;justify-content:center;
+    text-align:center;padding:36px 26px calc(38px + env(safe-area-inset-bottom));
+    background:transparent;
+    transition:opacity 1s ease, transform 1.3s cubic-bezier(.6,.05,.3,1), visibility 1s;
+  }
+  .portada.fuera{opacity:0;transform:scale(1.09);visibility:hidden;pointer-events:none;}
+  .portada .capa{position:relative;z-index:2;}
+
+  .sello{
+    display:inline-flex;align-items:center;gap:10px;
+    font-size:10.5px;letter-spacing:.4em;text-transform:uppercase;color:var(--ambar);
+    margin-bottom:32px;
+  }
+  .sello::before,.sello::after{content:"";width:26px;height:1px;background:rgba(240,169,87,.4);}
+  .saludo{
+    font-family:var(--serif);font-style:italic;font-weight:400;
+    font-size:clamp(24px,6.6vw,34px);color:var(--hueso-tenue);margin-bottom:6px;
+  }
+  .titular{
+    font-family:var(--serif);font-weight:500;
+    font-size:clamp(46px,14vw,96px);line-height:.98;letter-spacing:-.02em;
+    max-width:10ch;margin:0 auto;
+    text-shadow:0 0 60px rgba(240,169,87,.28);
+  }
+  .titular em{font-style:italic;color:var(--ambar);}
+  .bajada{
+    font-size:clamp(14.5px,4vw,17px);line-height:1.75;color:var(--hueso-tenue);
+    max-width:32ch;margin:24px auto 0;
+  }
+
+  .cta{
+    margin-top:38px;position:relative;
+    display:inline-flex;align-items:center;gap:14px;
+    font-family:var(--sans);font-size:12.5px;font-weight:400;
+    letter-spacing:.28em;text-transform:uppercase;
+    color:#160D05;
+    background:linear-gradient(135deg, var(--ambar) 0%, var(--ambar-fuerte) 100%);
+    border:none;border-radius:999px;padding:20px 36px;cursor:pointer;
+    box-shadow:0 0 0 1px rgba(240,169,87,.35), 0 18px 50px -16px rgba(240,169,87,.75);
+    transition:transform .35s cubic-bezier(.2,.9,.3,1.3), box-shadow .35s;
+    -webkit-tap-highlight-color:transparent;
+  }
+  .cta:hover{transform:translateY(-3px);box-shadow:0 0 0 1px rgba(240,169,87,.5), 0 26px 62px -16px rgba(240,169,87,.85);}
+  .cta:active{transform:translateY(0) scale(.985);}
+  .cta .flecha{display:inline-block;transition:transform .35s cubic-bezier(.2,.9,.3,1.3);}
+  .cta:hover .flecha{transform:translateX(5px);}
+  .cta::after{
+    content:"";position:absolute;inset:-8px;border-radius:999px;
+    border:1px solid rgba(240,169,87,.35);animation:latido 2.9s ease-out infinite;
+  }
+  @keyframes latido{
+    0%{transform:scale(.94);opacity:0;}
+    35%{opacity:.85;}
+    100%{transform:scale(1.16);opacity:0;}
+  }
+  .pista{margin-top:22px;font-size:10.5px;letter-spacing:.22em;text-transform:uppercase;color:#6C7488;}
+
+  /* ================= CONTENIDO ================= */
+  .contenido{
+    position:relative;z-index:5;
+    opacity:0;transition:opacity 1.1s ease .3s;
+    padding:0 22px calc(80px + env(safe-area-inset-bottom));
+    max-width:780px;margin:0 auto;
+  }
+  .contenido.visible{opacity:1;}
+
+  /* ---- cuenta regresiva ---- */
+  .reloj{
+    min-height:100svh;display:flex;flex-direction:column;align-items:center;justify-content:center;
+    text-align:center;padding:70px 0 50px;
+  }
+  .etiqueta{
+    font-size:10px;letter-spacing:.42em;text-transform:uppercase;color:var(--ambar);margin-bottom:20px;
+  }
+  .reloj h2{
+    font-family:var(--serif);font-weight:400;font-size:clamp(30px,8.5vw,54px);
+    line-height:1.1;max-width:15ch;margin:0 auto 10px;
+  }
+  .reloj h2 em{font-style:italic;color:var(--ambar);}
+  .fecha-grande{
+    font-family:var(--serif);font-style:italic;font-size:clamp(15.5px,4.3vw,20px);
+    color:var(--hueso-tenue);margin-bottom:44px;
+  }
+  .digitos{display:grid;grid-template-columns:repeat(4,1fr);gap:8px;width:100%;max-width:470px;}
+  .casilla{
+    background:linear-gradient(180deg, rgba(255,255,255,.05), rgba(255,255,255,.015));
+    border:1px solid var(--borde);border-radius:16px;padding:19px 4px 15px;
+    backdrop-filter:blur(6px);-webkit-backdrop-filter:blur(6px);
+  }
+  .casilla .n{
+    font-family:var(--serif);font-weight:500;font-size:clamp(30px,9vw,48px);line-height:1;
+    display:block;font-variant-numeric:tabular-nums;
+    color:#fff;text-shadow:0 0 26px rgba(240,169,87,.5);
+  }
+  .casilla .u{
+    display:block;margin-top:9px;font-size:9px;letter-spacing:.24em;
+    text-transform:uppercase;color:var(--hueso-tenue);
+  }
+  .bajar{
+    margin-top:54px;display:flex;flex-direction:column;align-items:center;gap:12px;
+    font-size:10px;letter-spacing:.3em;text-transform:uppercase;color:#6C7488;
+  }
+  .bajar .linea{
+    width:1px;height:44px;
+    background:linear-gradient(rgba(240,169,87,.7),transparent);
+    animation:respirar 2.4s ease-in-out infinite;
+  }
+  @keyframes respirar{0%,100%{opacity:.3;transform:scaleY(.65);transform-origin:top;}50%{opacity:1;transform:scaleY(1);}}
+
+  /* ---- promesa ---- */
+  .promesa{
+    margin:0 0 74px;padding:40px 26px 34px;border-radius:22px;
+    background:linear-gradient(180deg, rgba(255,255,255,.05), rgba(255,255,255,.012));
+    border:1px solid rgba(255,255,255,.08);
+    opacity:0;transform:translateY(28px);
+    transition:opacity .95s ease, transform .95s cubic-bezier(.2,.7,.3,1);
+  }
+  .promesa.entra{opacity:1;transform:none;}
+  .promesa .etiqueta{text-align:center;}
+  .promesa h3{
+    font-family:var(--serif);font-weight:400;font-style:italic;
+    font-size:clamp(26px,7vw,38px);line-height:1.2;text-align:center;margin-bottom:30px;
+  }
+  .promesa ul{list-style:none;max-width:44ch;margin:0 auto;}
+  .promesa li{
+    position:relative;padding-left:26px;margin-bottom:19px;
+    font-size:15px;line-height:1.75;color:var(--hueso-tenue);
+  }
+  .promesa li:last-child{margin-bottom:0;}
+  .promesa li::before{
+    content:"";position:absolute;left:2px;top:11px;width:7px;height:7px;border-radius:50%;
+    background:var(--ambar);box-shadow:0 0 12px rgba(240,169,87,.8);
+  }
+
+  /* ---- itinerario ---- */
+  .seccion-titulo{text-align:center;margin:24px 0 60px;}
+  .seccion-titulo h3{
+    font-family:var(--serif);font-weight:400;font-size:clamp(30px,8vw,48px);line-height:1.14;
+  }
+  .seccion-titulo h3 em{font-style:italic;color:var(--ambar);}
+  .seccion-titulo p{
+    margin:16px auto 0;font-size:14.5px;line-height:1.7;color:var(--hueso-tenue);max-width:34ch;
+  }
+
+  .ruta{position:relative;padding-left:34px;}
+  .carril{
+    position:absolute;left:6px;top:10px;bottom:70px;width:2px;
+    background:rgba(255,255,255,.08);border-radius:2px;overflow:hidden;
+  }
+  .carril .avance{
+    position:absolute;left:0;top:0;width:100%;height:0%;
+    background:linear-gradient(180deg, var(--ambar-fuerte), var(--ambar));
+    box-shadow:0 0 16px rgba(240,169,87,.85);
+    transition:height .25s linear;
+  }
+  .parada{
+    position:relative;padding-bottom:20px;margin-bottom:26px;
+    opacity:0;transform:translateY(30px);
+    transition:opacity .9s ease, transform .9s cubic-bezier(.2,.7,.3,1);
+  }
+  .parada.entra{opacity:1;transform:none;}
+  .parada::before{
+    content:"";position:absolute;left:-34px;top:14px;width:14px;height:14px;border-radius:50%;
+    background:var(--noche);border:2px solid rgba(240,169,87,.45);
+    transition:box-shadow .5s, background .5s, border-color .5s;
+  }
+  .parada.entra::before{
+    background:var(--ambar);border-color:var(--ambar);
+    box-shadow:0 0 0 5px rgba(240,169,87,.13), 0 0 22px rgba(240,169,87,.8);
+  }
+  .tarjeta{
+    background:linear-gradient(180deg, rgba(255,255,255,.045), rgba(255,255,255,.012));
+    border:1px solid rgba(255,255,255,.07);border-radius:18px;padding:24px 22px;
+    transition:border-color .4s, transform .4s;
+  }
+  .tarjeta:hover{border-color:var(--borde);transform:translateY(-2px);}
+  .dia{
+    font-size:10px;letter-spacing:.28em;text-transform:uppercase;color:var(--ambar);
+    display:block;margin-bottom:9px;
+  }
+  .lugar{
+    font-family:var(--serif);font-weight:400;font-size:clamp(24px,6.4vw,33px);
+    line-height:1.15;margin-bottom:11px;
+  }
+  .detalle{font-size:15px;line-height:1.78;color:var(--hueso-tenue);}
+  .apunte{
+    display:inline-block;margin-top:13px;font-size:10.5px;letter-spacing:.14em;
+    text-transform:uppercase;color:var(--ambar);
+    border:1px solid var(--borde);border-radius:999px;padding:6px 13px;
+  }
+
+  /* ---- cierre ---- */
+  .cierre{
+    margin-top:34px;padding:56px 28px;border-radius:24px;text-align:center;
+    background:radial-gradient(120% 100% at 50% 0%, rgba(240,169,87,.13), rgba(255,255,255,.02) 60%);
+    border:1px solid var(--borde);
+    opacity:0;transform:translateY(30px);
+    transition:opacity 1s ease, transform 1s cubic-bezier(.2,.7,.3,1);
+  }
+  .cierre.entra{opacity:1;transform:none;}
+  .cierre h4{
+    font-family:var(--serif);font-weight:400;font-style:italic;
+    font-size:clamp(27px,7.2vw,40px);line-height:1.2;margin-bottom:18px;
+  }
+  .cierre p{font-size:15px;line-height:1.8;color:var(--hueso-tenue);max-width:36ch;margin:0 auto;}
+  .firma{
+    margin-top:40px;padding-top:26px;border-top:1px solid rgba(255,255,255,.09);
+    font-family:var(--serif);font-style:italic;font-size:19px;color:var(--hueso);
+  }
+  .corazon{color:var(--ambar-fuerte);display:inline-block;animation:pulso 2.2s ease-in-out infinite;}
+  @keyframes pulso{0%,100%{transform:scale(1);}50%{transform:scale(1.18);}}
+
+  @media (prefers-reduced-motion: reduce){
+    *{animation:none!important;transition-duration:.01ms!important;}
+    html{scroll-behavior:auto;}
+  }
+</style>
+</head>
+<body class="bloqueado">
+
+  <div class="cielo" id="cielo"></div>
+
+  <div class="montanas" aria-hidden="true">
+    <svg viewBox="0 0 1440 320" preserveAspectRatio="none">
+      <path fill="#0A0F1D" d="M0,190 L110,140 L210,196 L330,116 L440,186 L560,132 L690,200 L800,150 L930,206 L1050,142 L1170,198 L1290,150 L1440,200 L1440,320 L0,320 Z"/>
+      <path fill="#070B16" d="M0,236 L130,196 L250,246 L380,186 L500,242 L640,196 L770,250 L900,200 L1030,252 L1160,204 L1300,250 L1440,212 L1440,320 L0,320 Z"/>
+      <path fill="#04060D" d="M0,284 L160,258 L300,290 L450,256 L600,292 L760,260 L910,294 L1060,262 L1220,294 L1360,266 L1440,288 L1440,320 L0,320 Z"/>
+    </svg>
+  </div>
+
+  <div class="vineta"></div>
+  <div class="grano"></div>
+
+  <!-- ============ PORTADA ============ -->
+  <section class="portada" id="portada">
+    <div class="capa">
+      <div class="sello">Ecuador &middot; Agosto 2026</div>
+      <p class="saludo">Mi amor,</p>
+      <h1 class="titular">Vamos a la <em>aventura</em></h1>
+      <p class="bajada">Tú, yo, el carro y una carretera que todavía no conocemos. Nuestras mini vacaciones, sin horarios de nadie más.</p>
+      <button class="cta" id="abrir">Ábrelo <span class="flecha">&rarr;</span></button>
+      <div class="pista">Un toque y te cuento todo</div>
+    </div>
+  </section>
+
+  <!-- ============ CONTENIDO ============ -->
+  <main class="contenido" id="contenido">
+
+    <section class="reloj">
+      <div class="etiqueta">Falta poquito</div>
+      <h2>Nos vamos en <em>exactamente</em> esto</h2>
+      <p class="fecha-grande">Domingo 16 de agosto, 1:00 de la tarde</p>
+      <div class="digitos" id="digitos">
+        <div class="casilla"><span class="n" id="d">00</span><span class="u">Días</span></div>
+        <div class="casilla"><span class="n" id="h">00</span><span class="u">Horas</span></div>
+        <div class="casilla"><span class="n" id="m">00</span><span class="u">Minutos</span></div>
+        <div class="casilla"><span class="n" id="s">00</span><span class="u">Segundos</span></div>
+      </div>
+      <div class="bajar"><span class="linea"></span>La ruta</div>
+    </section>
+
+    <section class="promesa" id="promesa">
+      <div class="etiqueta">Y algo más</div>
+      <h3>Lo que sí te aseguro</h3>
+      <ul>
+        <li>El sábado y el domingo son enteros, sin nada que nos interrumpa.</li>
+        <li>Que ningún plan es obligatorio: si un día solo queremos quedarnos en la cama, ese día también cuenta como viaje.</li>
+      </ul>
+    </section>
+
+    <section>
+      <div class="seccion-titulo">
+        <h3>Nuestra <em>ruta</em></h3>
+        <p>Ocho días, del domingo 16 al domingo 23. Ciudad por ciudad, parando en todo lo que valga la pena.</p>
+      </div>
+
+      <div class="ruta" id="ruta">
+        <div class="carril"><div class="avance" id="avance"></div></div>
+
+        <article class="parada">
+          <div class="tarjeta">
+            <span class="dia">Antes de salir &middot; Sábado 15</span>
+            <h4 class="lugar">Armamos las maletas</h4>
+            <p class="detalle">La parte que también cuenta: sacar las maletas, pelearnos por el espacio del baúl, armar la playlist y darnos cuenta de que nuestras mini vacaciones ya empezaron.</p>
+          </div>
+        </article>
+
+        <article class="parada">
+          <div class="tarjeta">
+            <span class="dia">Domingo 16 &middot; 1:00 pm</span>
+            <h4 class="lugar">Cuenca</h4>
+            <p class="detalle">Salimos después del almuerzo, como a la una. Llegamos con la tarde cayendo: calles de piedra, el Barranco al atardecer y un café larguísimo sin que nadie nos apure.</p>
+          </div>
+        </article>
+
+        <article class="parada">
+          <div class="tarjeta">
+            <span class="dia">Lunes 17</span>
+            <h4 class="lugar">Azogues</h4>
+            <p class="detalle">Un día tranquilo, de pueblo chiquito. Caminar sin mapa, comer donde nos provoque y ver el valle desde lo alto. Yo te voy a estar mirando a ti.</p>
+          </div>
+        </article>
+
+        <article class="parada">
+          <div class="tarjeta">
+            <span class="dia">Martes 18</span>
+            <h4 class="lugar">Nuestra ciudad favorita</h4>
+            <p class="detalle">Volvemos a lo nuestro: un Sweet and Coffee en la mano, un sanduchito de pernil y caminar sin rumbo hasta que se nos haga tarde. Cosas simples que contigo se vuelven mágicas.</p>
+          </div>
+        </article>
+
+        <article class="parada">
+          <div class="tarjeta">
+            <span class="dia">Miércoles 19</span>
+            <h4 class="lugar">Aguas termales</h4>
+            <p class="detalle">Meternos al agua caliente cuando ya está oscuro y hace frío afuera. No hay mejor plan que ese. No hablamos de nada importante.</p>
+          </div>
+        </article>
+
+        <article class="parada">
+          <div class="tarjeta">
+            <span class="dia">Jueves 20</span>
+            <h4 class="lugar">Tú eliges</h4>
+            <p class="detalle">Este día es tuyo entero. Una carretera al azar, un pueblo que no teníamos en la lista, o no movernos de donde estemos. Tú decides y yo manejo.</p>
+          </div>
+        </article>
+
+        <article class="parada">
+          <div class="tarjeta">
+            <span class="dia">Viernes 21</span>
+            <h4 class="lugar">Ingapirca &rarr; Alausí</h4>
+            <p class="detalle">En la tarde, las ruinas incas más grandes del país: piedras que llevan siglos ahí esperando. Y de ahí seguimos a Alausí, a dormir pegados a la montaña.</p>
+          </div>
+        </article>
+
+        <article class="parada">
+          <div class="tarjeta">
+            <span class="dia">Sábado 22 &middot; 8:00 am</span>
+            <h4 class="lugar">La Nariz del Diablo</h4>
+            <p class="detalle">Nos subimos al tren temprano. Zigzag pegado a la montaña, viento en la cara y tu mano en la mía todo el camino. Después seguimos a Riobamba y al Chimborazo, el punto de la Tierra más cercano al sol.</p>
+            <span class="apunte">Sí, ya averigüé los horarios</span>
+          </div>
+        </article>
+
+        <article class="parada">
+          <div class="tarjeta">
+            <span class="dia">Domingo 23</span>
+            <h4 class="lugar">Baños de Agua Santa</h4>
+            <p class="detalle">Cascadas, aguas termales y ese columpio al borde del mundo. Aquí toca gritar y reírnos hasta que duela. Y después, el camino de vuelta con la mejor semana encima.</p>
+          </div>
+        </article>
+
+        <article class="parada">
+          <div class="tarjeta">
+            <span class="dia">Antes de volver</span>
+            <h4 class="lugar">Ambato y Quito</h4>
+            <p class="detalle">Si nos provoca, nos quedamos uno o dos días por allá y los conocemos con calma antes de agarrar el camino de vuelta. Eso lo decidimos ahí, tú y yo.</p>
+          </div>
+        </article>
+      </div>
+    </section>
+
+    <section class="cierre" id="cierre">
+      <h4>Solo tienes que decir que sí</h4>
+      <p>El carro está listo, la ruta está pensada y las paradas se van a ir inventando solas. Lo único que falta eres tú diciendo &ldquo;vamos&rdquo;.</p>
+      <div class="firma">Te amo <span class="corazon">&#10084;</span></div>
+    </section>
+
+  </main>
+
+<script>
+(function(){
+  "use strict";
+
+  /* ====== FECHA DE SALIDA — cámbiala aquí si se mueve el plan ====== */
+  var SALIDA = new Date("2026-08-16T13:00:00-05:00").getTime();
+
+  /* ---- estrellas ---- */
+  var cielo = document.getElementById("cielo");
+  var total = window.innerWidth < 600 ? 70 : 130;
+  var trozos = "";
+  for(var i=0;i<total;i++){
+    var t = (Math.random()*2 + 0.7).toFixed(2);
+    trozos += '<span class="estrella" style="left:'+(Math.random()*100).toFixed(2)+'%;'+
+              'top:'+(Math.random()*72).toFixed(2)+'%;'+
+              'width:'+t+'px;height:'+t+'px;'+
+              'animation-delay:'+(Math.random()*4).toFixed(2)+'s;'+
+              'animation-duration:'+(3+Math.random()*3).toFixed(2)+'s;"></span>';
+  }
+  trozos += '<span class="fugaz" style="left:6%;top:12%;animation-delay:3s;"></span>';
+  trozos += '<span class="fugaz" style="left:58%;top:6%;animation-delay:11s;animation-duration:14s;"></span>';
+  cielo.insertAdjacentHTML("beforeend", trozos);
+
+  /* ---- abrir ---- */
+  var portada  = document.getElementById("portada");
+  var contenido= document.getElementById("contenido");
+  document.getElementById("abrir").addEventListener("click", function(){
+    portada.classList.add("fuera");
+    contenido.classList.add("visible");
+    document.body.classList.remove("bloqueado");
+    setTimeout(pintarAvance, 150);
+  });
+
+  /* ---- cuenta regresiva ---- */
+  var elD=document.getElementById("d"), elH=document.getElementById("h"),
+      elM=document.getElementById("m"), elS=document.getElementById("s");
+  function dd(n){ return (n<10?"0":"")+n; }
+  function tic(){
+    var falta = SALIDA - new Date().getTime();
+    if(falta<=0){
+      document.getElementById("digitos").innerHTML =
+        '<div class="casilla" style="grid-column:1/-1"><span class="n">Hoy</span>'+
+        '<span class="u">Es el día. Sube al carro.</span></div>';
+      clearInterval(reloj); return;
+    }
+    elD.textContent = dd(Math.floor(falta/86400000));
+    elH.textContent = dd(Math.floor(falta%86400000/3600000));
+    elM.textContent = dd(Math.floor(falta%3600000/60000));
+    elS.textContent = dd(Math.floor(falta%60000/1000));
+  }
+  tic();
+  var reloj = setInterval(tic,1000);
+
+  /* ---- aparición ---- */
+  var piezas = [].slice.call(document.querySelectorAll(".parada, #promesa, #cierre"));
+  if("IntersectionObserver" in window){
+    var obs = new IntersectionObserver(function(es){
+      es.forEach(function(e){
+        if(e.isIntersecting){ e.target.classList.add("entra"); obs.unobserve(e.target); }
+      });
+    },{threshold:.15, rootMargin:"0px 0px -60px 0px"});
+    piezas.forEach(function(p){ obs.observe(p); });
+  } else {
+    piezas.forEach(function(p){ p.classList.add("entra"); });
+  }
+
+  /* ---- línea de ruta que se dibuja ---- */
+  var ruta = document.getElementById("ruta");
+  var avance = document.getElementById("avance");
+  var pedido = false;
+
+  function pintarAvance(){
+    pedido = false;
+    var caja = ruta.getBoundingClientRect();
+    var alto = window.innerHeight;
+    var recorrido = caja.height + alto * 0.35;
+    var hecho = (alto * 0.65) - caja.top;
+    var pct = Math.max(0, Math.min(1, hecho / recorrido));
+    avance.style.height = (pct*100).toFixed(1) + "%";
+  }
+  window.addEventListener("scroll", function(){
+    if(!pedido){ pedido = true; requestAnimationFrame(pintarAvance); }
+  }, {passive:true});
+  window.addEventListener("resize", pintarAvance);
+  pintarAvance();
+})();
+</script>
+</body>
+</html>
