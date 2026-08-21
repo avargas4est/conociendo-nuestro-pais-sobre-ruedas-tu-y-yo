@@ -295,6 +295,31 @@
     *{animation:none!important;transition-duration:.01ms!important;}
     html{scroll-behavior:auto;}
   }
+  /* ---- ya dijo que sí ---- */
+  .dijiste{
+    margin-top:26px;padding:54px 28px 46px;border-radius:24px;text-align:center;
+    background:radial-gradient(120% 100% at 50% 0%, rgba(240,169,87,.17), rgba(255,255,255,.02) 62%);
+    border:1px solid var(--borde);
+    opacity:0;transform:translateY(30px);
+    transition:opacity 1s ease, transform 1s cubic-bezier(.2,.7,.3,1);
+  }
+  .dijiste.entra{opacity:1;transform:none;}
+  .marca{
+    font-family:var(--serif);font-weight:500;
+    font-size:clamp(38px,11.5vw,70px);line-height:1.02;letter-spacing:-.02em;margin-bottom:20px;
+  }
+  .marca em{font-style:italic;color:var(--ambar);}
+  .dijiste p{font-size:15px;line-height:1.8;color:var(--hueso-tenue);max-width:36ch;margin:0 auto;}
+  .confirmado{
+    display:inline-flex;align-items:center;gap:10px;margin-top:32px;
+    padding:12px 22px;border-radius:999px;
+    border:1px solid var(--borde);background:rgba(240,169,87,.07);
+    font-size:10.5px;letter-spacing:.2em;text-transform:uppercase;color:var(--ambar);
+  }
+  .punto{
+    width:7px;height:7px;border-radius:50%;background:var(--ambar);
+    box-shadow:0 0 12px rgba(240,169,87,.9);animation:pulso 2.2s ease-in-out infinite;
+  }
 </style>
 </head>
 <body class="bloqueado">
@@ -423,6 +448,13 @@
     <section class="cierre" id="cierre">
       <h4>Solo tienes que decir que sí</h4>
       <p>El carro está listo, la ruta está pensada y las paradas se van a ir inventando solas. Lo único que falta eres tú diciendo &ldquo;vamos&rdquo;.</p>
+    </section>
+
+    <section class="dijiste" id="dijiste">
+      <div class="etiqueta">Y entonces pasó</div>
+      <div class="marca">Dijiste que <em>sí</em></div>
+      <p>Ya no hay nada que preguntar ni nada que pensar. Esto dejó de ser una idea mía: ahora es nuestro, con fecha, con hora y contigo diciendo que vamos.</p>
+      <div class="confirmado"><span class="punto"></span>Viaje confirmado &middot; 21 al 29 de agosto</div>
       <div class="firma">Te amo <span class="corazon">&#10084;</span></div>
     </section>
 
@@ -482,7 +514,7 @@
   var reloj = setInterval(tic,1000);
 
   /* ---- aparición ---- */
-  var piezas = [].slice.call(document.querySelectorAll(".parada, #promesa, #cierre"));
+  var piezas = [].slice.call(document.querySelectorAll(".parada, #promesa, #cierre, #dijiste"));
   if("IntersectionObserver" in window){
     var obs = new IntersectionObserver(function(es){
       es.forEach(function(e){
